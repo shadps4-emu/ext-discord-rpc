@@ -110,6 +110,7 @@ if(UNIX)
 endif(UNIX)
 
 target_include_directories(discord-rpc PRIVATE ${RAPIDJSON}/include)
+target_include_directories(discord-rpc INTERFACE ${PROJECT_SOURCE_DIR}/include)
 
 if (NOT ${ENABLE_IO_THREAD})
     target_compile_definitions(discord-rpc PUBLIC -DDISCORD_DISABLE_IO_THREAD)
@@ -119,29 +120,3 @@ if (${BUILD_SHARED_LIBS})
     target_compile_definitions(discord-rpc PUBLIC -DDISCORD_DYNAMIC_LIB)
     target_compile_definitions(discord-rpc PRIVATE -DDISCORD_BUILDING_SDK)
 endif(${BUILD_SHARED_LIBS})
-
-if (CLANG_FORMAT_CMD)
-    add_dependencies(discord-rpc clangformat)
-endif(CLANG_FORMAT_CMD)
-
-# install
-
-install(
-    TARGETS discord-rpc
-    EXPORT "discord-rpc"
-    RUNTIME
-        DESTINATION "${CMAKE_INSTALL_BINDIR}"
-    LIBRARY
-        DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-    ARCHIVE
-        DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-    INCLUDES
-        DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
-)
-
-install(
-    FILES
-        "../include/discord_rpc.h"
-		"../include/discord_register.h"
-    DESTINATION "include"
-)
